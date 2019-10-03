@@ -1,0 +1,32 @@
+Arguments: 
+  /usr/local/Cellar/nvm/0.34.0/versions/node/v9.11.2/bin/node /usr/local/Cellar/yarn/1.17.3/libexec/bin/yarn.js init
+
+PATH: 
+  /usr/local/opt/nvm/versions/node/v9.11.2/bin:/usr/local/opt/gettext/bin:/usr/local/opt/ruby/bin:/Users/Shared/DBngin/mysql/8.0.12/bin:/Users/huytran/.cargo/bin:/usr/local/opt/texinfo/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Shared/DBngin/mysql/8.0.12/bin:/Users/huytran/.cargo/bin:/usr/local/opt/texinfo/bin:/Users/huy/.cargo/bin:/Users/huy/flutter/bin:/usr/local/Cellar/emacs/26.1_1/bin:/Users/huy/.local/bin:/Users/huytran/go:/Users/huytran/go/bin:/usr/local/opt/go/libexec/bin:/Users/huy/eclipse/java-oxygen/Eclipse.app/Contents/Eclips:/Users/huy/.cargo/bin:/Users/huy/flutter/bin:/usr/local/Cellar/emacs/26.1_1/bin:/Users/huy/.local/bin:/Users/huytran/go:/Users/huytran/go/bin:/usr/local/opt/go/libexec/bin:/Users/huy/eclipse/java-oxygen/Eclipse.app/Contents/Eclips
+
+Yarn version: 
+  1.17.3
+
+Node version: 
+  9.11.2
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/huytran/package.json: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:304:30)
+      at /usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:315:13
+      at <anonymous>
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
