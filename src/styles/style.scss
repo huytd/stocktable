@@ -113,6 +113,19 @@
 }
 
 @tailwind base;
+
+h1 {
+  @apply text-2xl;
+}
+
+h2 {
+  @apply text-xl;
+}
+
+h3 {
+  @apply text-lg;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -123,4 +136,23 @@
 .draggable {
   -webkit-user-select: none;
   -webkit-app-region: drag;
+}
+
+progress[value] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  @apply rounded-full;
+  @apply bg-tomato-400;
+  @apply h-3;
+  @apply mx-2;
+}
+
+progress[value]::-moz-progress-bar, progress[value]::-webkit-progress-bar {
+  @apply rounded-full;
+  @apply bg-green-400;
+  border-right: 8px solid var(--gray-900);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
