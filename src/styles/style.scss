@@ -114,6 +114,14 @@
 
 @tailwind base;
 
+body {
+  font-size: 16px;
+}
+
+* {
+  font-family: 'IBM Plex Sans';
+}
+
 h1 {
   @apply text-2xl;
 }
