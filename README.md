@@ -4,7 +4,7 @@ Data source: Yahoo Financial
 
 Screenshot:
 
-![](https://i.imgur.com/xExiVNB.png)
+![](https://i.imgur.com/boLs8Hy.png)
 
 Usage:
 
