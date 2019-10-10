@@ -75,7 +75,7 @@ const tableConfig = [
     path: 'financialData.debtToEquity.fmt'
   },
   {
-    text: 'Earning Grwoth',
+    text: 'Earning Growth',
     path: 'financialData.earningsGrowth.fmt'
   },
   {
@@ -219,10 +219,7 @@ export const App = () => {
   }, []);
 
   return <div className="w-full h-full flex flex-col">
-    <div className="p-5 pb-0">
-      Related:
-    </div>
-    <div className="flex-1 py-5">
+    <div className="flex-1">
       <Chart symbols={chartSymbols}/>
       <div className="px-5">
         <table className="w-full">
