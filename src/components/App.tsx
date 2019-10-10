@@ -2,6 +2,47 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 
 const tableConfig = [
+  // PRICE
+  {
+    header: 'Pricing',
+  },
+  {
+    text: 'Day Low/High',
+    path: function(source) {
+      const low = pathRead(source, 'summaryDetail.dayLow.raw');
+      const high = pathRead(source, 'summaryDetail.dayHigh.raw');
+      const value = pathRead(source, 'financialData.currentPrice.raw');
+      return <DayLH low={low} high={high} value={value} />;
+    }
+  },
+  {
+    text: 'Previous Close',
+    path: 'summaryDetail.previousClose.fmt'
+  },
+  {
+    text: 'Open',
+    path: 'summaryDetail.open.fmt'
+  },
+  {
+    text: '50 Days Average',
+    path: 'summaryDetail.fiftyDayAverage.fmt'
+  },
+  {
+    text: '200 Days Average',
+    path: 'summaryDetail.twoHundredDayAverage.fmt'
+  },
+  {
+    text: 'Average Daily Volume 10 Days',
+    path: 'price.averageDailyVolume10Day.fmt'
+  },
+  {
+    text: 'Average Daily Volume 3 Months',
+    path: 'price.averageDailyVolume3Month.fmt'
+  },
+  // KEYS
+  {
+    header: 'Key Statistics',
+  },
   {
     text: 'Market Cap.',
     path: 'price.marketCap.fmt'
@@ -14,9 +55,17 @@ const tableConfig = [
     text: 'Shares Outstanding',
     path: 'defaultKeyStatistics.sharesOutstanding.fmt'
   },
+  // DIVIDEND
   {
-    text: 'Dividend',
-    path: ['summaryDetail.dividendYield.fmt', '-', 'summaryDetail.dividendRate.fmt']
+    header: 'Dividend'
+  },
+  {
+    text: 'Dividend Yield',
+    path: 'summaryDetail.dividendYield.fmt'
+  },
+  {
+    text: 'Dividend Rate',
+    path: 'summaryDetail.dividendRate.fmt'
   },
   {
     text: 'Dividend Date',
@@ -25,6 +74,38 @@ const tableConfig = [
   {
     text: 'Payout Ratio',
     path: 'summaryDetail.payoutRatio.fmt'
+  },
+  // FINANCIAL
+  {
+    header: 'Financial'
+  },
+  {
+    text: 'Total Revenue',
+    path: 'financialData.totalRevenue.fmt'
+  },
+  {
+    text: 'Revenue Per Share',
+    path: 'financialData.revenuePerShare.fmt'
+  },
+  {
+    text: 'Profit Margin',
+    path: 'financialData.profitMargins.fmt'
+  },
+  {
+    text: 'Operating Margin',
+    path: 'financialData.operatingMargins.fmt'
+  },
+    {
+    text: 'Total Debt',
+    path: 'financialData.totalDebt.fmt'
+  },
+  {
+    text: 'Debt To Equity',
+    path: 'financialData.debtToEquity.fmt'
+  },
+  // GROWTH
+  {
+    header: 'Growth'
   },
   {
     text: 'Trailing P/E',
@@ -51,36 +132,60 @@ const tableConfig = [
     path: 'earningsTrend.trend.1.growth.fmt'
   },
   {
-    text: 'Total Revenue',
-    path: 'financialData.totalRevenue.fmt'
-  },
-  {
-    text: 'Revenue Per Share',
-    path: 'financialData.revenuePerShare.fmt'
-  },
-  {
-    text: 'Profit Margin',
-    path: 'financialData.profitMargins.fmt'
-  },
-  {
-    text: 'Operating Margin',
-    path: 'financialData.operatingMargins.fmt'
-  },
-    {
-    text: 'Total Debt',
-    path: 'financialData.totalDebt.fmt'
-  },
-  {
-    text: 'Debt To Equity',
-    path: 'financialData.debtToEquity.fmt'
-  },
-  {
     text: 'Earning Growth',
     path: 'financialData.earningsGrowth.fmt'
   },
   {
     text: 'Revenue Growth',
     path: 'financialData.revenueGrowth.fmt'
+  },
+  // INCOME STATEMENT
+  {
+    header: 'Last Income Statement'
+  },
+  {
+    text: 'Date',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.endDate.fmt'
+  },
+  {
+    text: 'Total Revenue',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.totalRevenue.fmt'
+  },
+  {
+    text: 'Cost of Revenue',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.costOfRevenue.fmt'
+  },
+  {
+    text: 'Gross Profit',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.grossProfit.fmt'
+  },
+  {
+    text: 'Total Operating Expenses',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.totalOperatingExpenses.fmt'
+  },
+  {
+    text: 'Operating Income',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.totalOperatingExpenses.fmt'
+  },
+  {
+    text: 'Other Income & Expenses',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.totalOtherIncomeExpenseNet.fmt'
+  },
+  {
+    text: 'Income Before Taxes',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.incomeBeforeTax.fmt'
+  },
+  {
+    text: 'Income Tax Expense',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.incomeTaxExpense.fmt'
+  },
+  {
+    text: 'Net Income',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.netIncome.fmt'
+  },
+  {
+    text: 'Net Income Applicable To Common Shares',
+    path: 'incomeStatementHistory.incomeStatementHistory.0.netIncomeApplicableToCommonShares.fmt'
   }
 ];
 
@@ -186,10 +291,18 @@ const DayLH = (props) => {
 const DisplayTable = props => {
   const config = props.config;
   const source = props.source;
-  return config.map(field => <tr className="hover:bg-gray-100">
-    <td className="py-3 text-gray-600">{field.text}</td>
-    {source.map(s => <td className="py-3">{configExpression(s, field.path)}</td>)}
-  </tr>);
+  return config.map(field => {
+    if (field.header) {
+      return <tr className="bg-gray-300">
+        <td className="p-2 px-3 font-bold" colSpan={source.length+1}>{field.header}</td>
+      </tr>;
+    } else {
+      return <tr className="hover:bg-gray-100">
+        <td className="py-3 pl-3 text-gray-600">{field.text}</td>
+        {source.map(s => <td className="py-3">{configExpression(s, field.path)}</td>)}
+      </tr>;
+    }
+  });
 };
 
 export const App = () => {
@@ -230,20 +343,13 @@ export const App = () => {
               const change = pathRead(s, 'price.regularMarketChangePercent.raw');
               const percent = pathRead(s, 'price.regularMarketChangePercent.fmt');
               const price = pathRead(s, 'price.regularMarketPrice.raw');
+              const name = pathRead(s, 'price.shortName');
               return <td className="py-3">
                 <h1 className="font-bold mr-2">{symbol}</h1>
+                <div className="block">{name}</div>
                 <h2 className="inline-block text-gray-800 mr-2">{price}</h2>
                 <h2 className={`inline-block ${change > 0 ? 'text-green-600' : 'text-tomato-600'}`}>{percent}</h2>
               </td>;
-            })}
-          </tr>
-          <tr className="hover:bg-gray-100">
-            <td className="py-3 text-gray-600">Day L/H</td>
-            {dataSource.map(s => {
-              const low = pathRead(s, 'summaryDetail.dayLow.raw');
-              const high = pathRead(s, 'summaryDetail.dayHigh.raw');
-              const value = pathRead(s, 'financialData.currentPrice.raw');
-              return <td className="py-3"><DayLH low={low} high={high} value={value} /></td>;
             })}
           </tr>
           <DisplayTable config={tableConfig} source={dataSource} />
@@ -252,5 +358,3 @@ export const App = () => {
     </div>
   </div>;
 };
-
-
