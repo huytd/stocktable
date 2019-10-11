@@ -327,7 +327,7 @@ const findMaxIndex = values => {
         let n = parseFloat(v.replace(/K|M|B|T/i, ''));
         re = n * multiply;
       } else {
-        re = parseFloat(v.replace(/%/, ''));
+        re = parseFloat(v.replace(/%|,/g, ''));
       }
       if (re > max) {
         max = re;
