@@ -1,5 +1,45 @@
+/**
+ * TODO:
+ * 1. Make chart looks more cleaner and meaningful
+ * 2. Customizable Table
+ * 3. Provide more metrics
+ * 4. Chart should have more range: 10Y, 5Y, 1Y, 6MO, 3MO,...
+ * 5. Explorable Phase 1: Search stock with dropdown list
+ * 6. Explorable Phase 2: List peers/competitors
+ */
+
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef, useLayoutEffect} from 'react';
+import Chart from "chart.js";
+
+Chart.defaults.LineWithLine = Chart.defaults.line;
+Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+   draw: function(ease) {
+      Chart.controllers.line.prototype.draw.call(this, ease);
+
+      if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+         var activePoint = this.chart.tooltip._active[0],
+             ctx = this.chart.ctx,
+             x = activePoint.tooltipPosition().x,
+             topY = this.chart.scales['y-axis-0'].top,
+             bottomY = this.chart.scales['y-axis-0'].bottom;
+
+         // draw line
+         ctx.save();
+         ctx.beginPath();
+         ctx.moveTo(x, topY);
+         ctx.lineTo(x, bottomY);
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = '#07C';
+         ctx.stroke();
+         ctx.restore();
+      }
+   }
+});
+
+const COLORS = ['#1ba3c6', '#30bcad', '#33a65c', '#a2b627', '#f8b620', '#f06719', '#f64971', '#eb73b3', '#a26dc2', '#4f7cba'];
+
+const cors = `https://snackycors.herokuapp.com/`;
 
 const tableConfig = [
   // PRICE
@@ -253,7 +293,7 @@ const tableConfig = [
     path: 'financialData.profitMargins.fmt',
     compare: true
   },
-  
+
   // KEYS
   {
     header: 'Key Statistics',
@@ -548,7 +588,7 @@ const tableConfig = [
         </div>;
     },
   },
-  
+
   // Instrument
   {
     header: 'Instrument'
@@ -578,7 +618,7 @@ const tableConfig = [
     path: 'summaryDetail.currency',
     compare: true
   },
-  
+
   // Trending
   {
     header: 'Trending'
@@ -745,11 +785,11 @@ const tableConfig = [
     path: 'defaultKeyStatistics.SandP52WeekChange.fmt',
     compare: true
   },
-  
 
-  
-  
-  
+
+
+
+
   // https://www.marketwatch.com/investing/stock/pep/financials/cash-flow
   // https://finance.yahoo.com/quote/PEP/cash-flow/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAALaTDtUIjFuh2G6j4Ajvcdg0rLiElg9WGfjYLUSPXIRoFaaudY_MJuDhU01Yx6uMbDVYkpzx9nfaOfC1CbQGrmE3eViIoLw5u7NEfTe7AX2x_lKEKqhlSbK48Lwgczwm5YcYiCffZxtnAm3N3m8C_L7qQuU8POaqkCnYScOlKMeP
   // Cashflow
@@ -758,6 +798,11 @@ const tableConfig = [
   },*/
 
 ];
+
+const getParamSymbols = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return (urlParams.get('symbols') || "").split(",");
+};
 
 const pathRead = (obj, path) => {
   let paths = path.split('.')
@@ -812,7 +857,6 @@ const getCache = symbol => {
 const fetchStock = async symbol => {
   let cached = getCache(symbol);
   if (cached === -1) {
-    const cors = `https://cors-anywhere.herokuapp.com/`;
     const url = `${cors}https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=assetProfile,balanceSheetHistory,balanceSheetHistoryQuarterly,calendarEvents,cashflowStatementHistory,cashflowStatementHistoryQuarterly,defaultKeyStatistics,earnings,earningsHistory,earningsTrend,financialData,fundOwnership,incomeStatementHistory,incomeStatementHistoryQuarterly,indexTrend,industryTrend,insiderHolders,insiderTransactions,institutionOwnership,majorDirectHolders,majorHoldersBreakdown,netSharePurchaseActivity,price,quoteType,recommendationTrend,secFilings,sectorTrend,summaryDetail,summaryProfile,symbol,upgradeDowngradeHistory,fundProfile,topHoldings,fundPerformance`;
     const res = await fetch(url);
     const json = await res.json();
@@ -824,25 +868,112 @@ const fetchStock = async symbol => {
   return cached;
 };
 
-const Chart = (props) => {
-  useEffect(() => {
-    new TradingView.MediumWidget({
-      "container_id": "tv-medium-widget",
-      "symbols": props.symbols,
-      "greyText": "Quotes by",
-      "gridLineColor": "#e9e9ea",
-      "fontColor": "#83888D",
-      "underLineColor": "#dbeffb",
-      "trendLineColor": "#4bafe9",
-      "width": "100%",
-      "height": "300px",
-      "locale": "en"
-    })
-  }, [props.symbols]);
+const fetchHistory = async (symbol, range, interval) => {
+  const url = `${cors}https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?region=US&interval=${interval}&range=${range}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json;
+};
 
-  return <div className="tradingview-widget-container">
-    <div id="tv-medium-widget"></div>
-  </div>
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
+const HistoryChart = (props) => {
+  const symbols = props.symbols;
+  const [chartData, setChartData] = useState({
+    labels: [],
+    data: []
+  });
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      if (symbols) {
+        const response = await Promise.all(symbols.map(async s => await fetchHistory(s, '5y', '1mo')));
+        const timestamps = response[0].chart.result[0].timestamp.map(t => {
+          const parsed = new Date(t * 1000);
+          return `${monthNames[parsed.getMonth()]} ${parsed.getFullYear() % 100}`
+        });
+        const entries = response.map(r => r.chart.result[0].indicators.adjclose[0].adjclose);
+        setChartData({
+          labels: timestamps,
+          data: entries
+        });
+      }
+    })();
+  }, []);
+
+  useLayoutEffect(() => {
+    const canvas = canvasRef.current;
+    var ctx = canvas.getContext('2d');
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'LineWithLine',
+
+      // The data for our dataset
+      data: {
+        labels: chartData.labels,
+        datasets: chartData.data.map((c, i) => ({
+          label: symbols[i],
+          fill: false,
+          borderColor: COLORS[i > COLORS.length ? i - Math.random(COLORS.length - 1) : i],
+          borderWidth: 3,
+          lineTension: 0,
+          pointRadius: 0,
+          pointHitRadius: 5,
+          data: c
+        }))
+      },
+
+      // Configuration options go here
+      options: {
+        title: {
+          display: true,
+          position: 'bottom',
+          text: '5 Years Price History'
+        },
+        maintainAspectRatio: false,
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          caretSize: 5,
+          cornerRadius: 2,
+          xPadding: 10,
+          yPadding: 10
+        },
+        scales: {
+          xAxes: [
+            {
+              ticks: {
+                display: false
+              },
+              gridLines: {
+                display: false,
+                drawBorder: false
+              }
+            }
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: true,
+                borderDash: [8, 4],
+                color: '#eee',
+                drawBorder: false,
+              }
+            }
+          ]
+        },
+        legend: {
+          labels: {
+            boxWidth: 12
+          }
+        },
+      }
+    });
+  }, [chartData]);
+
+  return <div id="chart-container"><canvas ref={canvasRef} /></div>;
 };
 
 const DayLH = (props) => {
@@ -871,7 +1002,7 @@ const findMaxIndex = values => {
         re = v;
       } else {
         const multiply = (v.match(/K|M|B|T/i) || []).map(c => c === 'K' ? 1000 : (c === 'M' ? 1_000_000 : (c === 'B' ? 1_000_000_000 : (c === 'T' ? 1_000_000_000_000 : 1)))).pop() || 0;
-        
+
         if (multiply) {
           let n = parseFloat(v.replace(/K|M|B|T/i, ''));
           re = n * multiply;
@@ -908,26 +1039,13 @@ const DisplayTable = props => {
 };
 
 export const App = () => {
+  const symbols = getParamSymbols();
   const [dataSource, setSource] = useState([]);
-  const [chartSymbols, setChartSymbols] = useState([]);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const symbols = (urlParams.get('symbols') || "").split(",");
     (async () => {
       if (symbols.length) {
         const data = await Promise.all(symbols.map(async s => await fetchStock(s)));
-        const chartSymbolParsed = data.map(s => {
-          const exchangeName = pathRead(s, 'price.exchangeName');
-          const symbol = pathRead(s, 'price.symbol');
-          if (exchangeName.match(/nasdaq/i)) {
-            return `NASDAQ:${symbol}`;
-          }
-          else {
-            return `${exchangeName}:${symbol}`
-          }
-        });
-        setChartSymbols(chartSymbolParsed);
         setSource(data);
       }
     })();
@@ -935,7 +1053,7 @@ export const App = () => {
 
   return <div className="w-full h-full flex flex-col">
     <div className="flex-1">
-      <Chart symbols={chartSymbols}/>
+      <HistoryChart symbols={symbols}/>
       <div className="px-5">
         <table className="w-full">
           <tr className="border-b">
