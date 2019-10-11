@@ -560,7 +560,7 @@ const tableConfig = [
   },
   {
     text: 'Exchange Name',
-    path: 'quoteType.exchangeName',
+    path: 'price.exchangeName',
     compare: true
   },
   {
@@ -575,7 +575,7 @@ const tableConfig = [
   },
   {
     text: 'Currency',
-    path: 'quoteType.currency',
+    path: 'summaryDetail.currency',
     compare: true
   },
   
