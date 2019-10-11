@@ -17,27 +17,33 @@ const tableConfig = [
   },
   {
     text: 'Previous Close',
-    path: 'summaryDetail.previousClose.fmt'
+    path: 'summaryDetail.previousClose.fmt',
+    compare: true
   },
   {
     text: 'Open',
-    path: 'summaryDetail.open.fmt'
+    path: 'summaryDetail.open.fmt',
+    compare: true
   },
   {
     text: '50 Days Average',
-    path: 'summaryDetail.fiftyDayAverage.fmt'
+    path: 'summaryDetail.fiftyDayAverage.fmt',
+    compare: true
   },
   {
     text: '200 Days Average',
-    path: 'summaryDetail.twoHundredDayAverage.fmt'
+    path: 'summaryDetail.twoHundredDayAverage.fmt',
+    compare: true
   },
   {
     text: 'Average Daily Volume 10 Days',
-    path: 'price.averageDailyVolume10Day.fmt'
+    path: 'price.averageDailyVolume10Day.fmt',
+    compare: true
   },
   {
     text: 'Average Daily Volume 3 Months',
-    path: 'price.averageDailyVolume3Month.fmt'
+    path: 'price.averageDailyVolume3Month.fmt',
+    compare: true
   },
   // KEYS
   {
@@ -45,7 +51,8 @@ const tableConfig = [
   },
   {
     text: 'Market Cap.',
-    path: 'price.marketCap.fmt'
+    path: 'price.marketCap.fmt',
+    compare: true
   },
   {
     text: '52-Week Range',
@@ -61,11 +68,13 @@ const tableConfig = [
   },
   {
     text: 'Dividend Yield',
-    path: 'summaryDetail.dividendYield.fmt'
+    path: 'summaryDetail.dividendYield.fmt',
+    compare: true
   },
   {
     text: 'Dividend Rate',
-    path: 'summaryDetail.dividendRate.fmt'
+    path: 'summaryDetail.dividendRate.fmt',
+    compare: true
   },
   {
     text: 'Dividend Date',
@@ -73,7 +82,8 @@ const tableConfig = [
   },
   {
     text: 'Payout Ratio',
-    path: 'summaryDetail.payoutRatio.fmt'
+    path: 'summaryDetail.payoutRatio.fmt',
+    compare: true
   },
   // FINANCIAL
   {
@@ -81,27 +91,33 @@ const tableConfig = [
   },
   {
     text: 'Total Revenue',
-    path: 'financialData.totalRevenue.fmt'
+    path: 'financialData.totalRevenue.fmt',
+    compare: true
   },
   {
     text: 'Revenue Per Share',
-    path: 'financialData.revenuePerShare.fmt'
+    path: 'financialData.revenuePerShare.fmt',
+    compare: true
   },
   {
     text: 'Profit Margin',
-    path: 'financialData.profitMargins.fmt'
+    path: 'financialData.profitMargins.fmt',
+    compare: true
   },
   {
     text: 'Operating Margin',
-    path: 'financialData.operatingMargins.fmt'
+    path: 'financialData.operatingMargins.fmt',
+    compare: true
   },
     {
     text: 'Total Debt',
-    path: 'financialData.totalDebt.fmt'
+    path: 'financialData.totalDebt.fmt',
+    compare: true
   },
   {
     text: 'Debt To Equity',
-    path: 'financialData.debtToEquity.fmt'
+    path: 'financialData.debtToEquity.fmt',
+    compare: true
   },
   // GROWTH
   {
@@ -109,35 +125,43 @@ const tableConfig = [
   },
   {
     text: 'Trailing P/E',
-    path: 'summaryDetail.trailingPE.fmt'
+    path: 'summaryDetail.trailingPE.fmt',
+    compare: true
   },
   {
     text: 'Forward P/E',
-    path: 'summaryDetail.forwardPE.fmt'
+    path: 'summaryDetail.forwardPE.fmt',
+    compare: true
   },
   {
     text: 'Trailing EPS',
-    path: 'defaultKeyStatistics.trailingEps.fmt'
+    path: 'defaultKeyStatistics.trailingEps.fmt',
+    compare: true
   },
   {
     text: 'Forward EPS',
-    path: 'defaultKeyStatistics.forwardEps.fmt'
+    path: 'defaultKeyStatistics.forwardEps.fmt',
+    compare: true
   },
   {
     text: 'Current Qtr. Growth',
-    path: 'earningsTrend.trend.0.growth.fmt'
+    path: 'earningsTrend.trend.0.growth.fmt',
+    compare: true
   },
   {
     text: 'Next Qtr. Growth Estimate',
-    path: 'earningsTrend.trend.1.growth.fmt'
+    path: 'earningsTrend.trend.1.growth.fmt',
+    compare: true
   },
   {
     text: 'Earning Growth',
-    path: 'financialData.earningsGrowth.fmt'
+    path: 'financialData.earningsGrowth.fmt',
+    compare: true
   },
   {
     text: 'Revenue Growth',
-    path: 'financialData.revenueGrowth.fmt'
+    path: 'financialData.revenueGrowth.fmt',
+    compare: true
   },
   // INCOME STATEMENT
   {
@@ -145,19 +169,18 @@ const tableConfig = [
   },
   {
     text: 'Date',
-    path: 'incomeStatementHistory.incomeStatementHistory.0.endDate.fmt'
+    path: 'incomeStatementHistory.incomeStatementHistory.0.endDate.fmt',
+    compare: true
   },
   {
     text: 'Total Revenue',
-    path: 'incomeStatementHistory.incomeStatementHistory.0.totalRevenue.fmt'
-  },
-  {
-    text: 'Cost of Revenue',
-    path: 'incomeStatementHistory.incomeStatementHistory.0.costOfRevenue.fmt'
+    path: 'incomeStatementHistory.incomeStatementHistory.0.totalRevenue.fmt',
+    compare: true
   },
   {
     text: 'Gross Profit',
-    path: 'incomeStatementHistory.incomeStatementHistory.0.grossProfit.fmt'
+    path: 'incomeStatementHistory.incomeStatementHistory.0.grossProfit.fmt',
+    compare: true
   },
   {
     text: 'Total Operating Expenses',
@@ -181,11 +204,13 @@ const tableConfig = [
   },
   {
     text: 'Net Income',
-    path: 'incomeStatementHistory.incomeStatementHistory.0.netIncome.fmt'
+    path: 'incomeStatementHistory.incomeStatementHistory.0.netIncome.fmt',
+    compare: true
   },
   {
     text: 'Net Income Applicable To Common Shares',
-    path: 'incomeStatementHistory.incomeStatementHistory.0.netIncomeApplicableToCommonShares.fmt'
+    path: 'incomeStatementHistory.incomeStatementHistory.0.netIncomeApplicableToCommonShares.fmt',
+    compare: true
   }
 ];
 
@@ -255,7 +280,6 @@ const fetchStock = async symbol => {
 };
 
 const Chart = (props) => {
-  console.log('>>>>>', props.symbols)
   useEffect(() => {
     new TradingView.MediumWidget({
       "container_id": "tv-medium-widget",
@@ -288,6 +312,32 @@ const DayLH = (props) => {
   </div>
 };
 
+/**
+ * A cool stuff help you quickly return the index of the maximum value of a human friendly notated array
+ *                  #0     #1     #2
+ * For example: [ '1.5M', '3B', '-2M' ] => 1
+ */
+const findMaxIndex = values => {
+  let max = 0; let maxIndex = -1;
+  values.forEach((v, idx) => {
+    if (v) {
+      const multiply = (v.match(/K|M|B|T/i) || []).map(c => c === 'K' ? 1000 : (c === 'M' ? 1_000_000 : (c === 'B' ? 1_000_000_000 : (c === 'T' ? 1_000_000_000_000 : 1)))).pop() || 0;
+      let re = 0;
+      if (multiply) {
+        let n = parseFloat(v.replace(/K|M|B|T/i, ''));
+        re = n * multiply;
+      } else {
+        re = parseFloat(v.replace(/%/, ''));
+      }
+      if (re > max) {
+        max = re;
+        maxIndex = idx;
+      }
+    }
+  });
+  return maxIndex;
+};
+
 const DisplayTable = props => {
   const config = props.config;
   const source = props.source;
@@ -297,9 +347,11 @@ const DisplayTable = props => {
         <td className="p-2 px-3 font-bold" colSpan={source.length+1}>{field.header}</td>
       </tr>;
     } else {
+      const values = source.map(s => configExpression(s, field.path));
+      const maxIndex = field.compare ? findMaxIndex(values) : -1;
       return <tr className="hover:bg-gray-100">
         <td className="py-3 pl-3 text-gray-600">{field.text}</td>
-        {source.map(s => <td className="py-3">{configExpression(s, field.path)}</td>)}
+        {source.map((_, i) => <td className={`py-3 ${i === maxIndex ? 'font-bold' : ''}`}>{values[i]}</td>)}
       </tr>;
     }
   });
