@@ -37,7 +37,7 @@ Chart.controllers.LineWithLine = Chart.controllers.line.extend({
    }
 });
 
-const COLORS = ['#1ba3c6', '#30bcad', '#33a65c', '#a2b627', '#f8b620', '#f06719', '#f64971', '#eb73b3', '#a26dc2', '#4f7cba'];
+const COLORS = ['#f81b02', '#fc7715', '#afbf41', '#50c49f', '#3b95c4', '#b560d4'];
 
 const cors = `https://snackycors.herokuapp.com/`;
 
@@ -959,9 +959,7 @@ const HistoryChart = (props) => {
                 display: false
               },
               gridLines: {
-                display: true,
-                borderDash: [8, 4],
-                color: '#eee',
+                display: false,
                 drawBorder: false
               }
             }
@@ -969,7 +967,7 @@ const HistoryChart = (props) => {
           yAxes: [
             {
               ticks: {
-                callback: (value) => `${value}%`
+                callback: (value, index) => index % 2 === 0 ? `${value}%` : ''
               },
               gridLines: {
                 display: true,
