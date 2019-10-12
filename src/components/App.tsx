@@ -875,7 +875,7 @@ const fetchHistory = async (symbol, range, interval) => {
   return json;
 };
 
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+const monthNames = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
 const HistoryChart = (props) => {
   const symbols = props.symbols;
@@ -888,12 +888,16 @@ const HistoryChart = (props) => {
   useEffect(() => {
     (async () => {
       if (symbols) {
-        const response = await Promise.all(symbols.map(async s => await fetchHistory(s, '5y', '1mo')));
+        const response = await Promise.all(symbols.map(async s => await fetchHistory(s, '5y', '5d')));
         const timestamps = response[0].chart.result[0].timestamp.map(t => {
           const parsed = new Date(t * 1000);
-          return `${monthNames[parsed.getMonth()]} ${parsed.getFullYear() % 100}`
+          return `${monthNames[parsed.getMonth()]} ${parsed.getFullYear()}`
         });
-        const entries = response.map(r => r.chart.result[0].indicators.adjclose[0].adjclose);
+        const entries = response.map(r => {
+          const hist = r.chart.result[0].indicators.adjclose[0].adjclose;
+          const base = hist[0];
+          return hist.map(i => +(((i - base) / base) * 100).toFixed(2));
+        });
         setChartData({
           labels: timestamps,
           data: entries
@@ -929,7 +933,7 @@ const HistoryChart = (props) => {
         title: {
           display: true,
           position: 'bottom',
-          text: '5 Years Price History'
+          text: '5 Years Performance History'
         },
         maintainAspectRatio: false,
         tooltips: {
@@ -939,7 +943,14 @@ const HistoryChart = (props) => {
           caretSize: 5,
           cornerRadius: 2,
           xPadding: 10,
-          yPadding: 10
+          yPadding: 10,
+          callbacks: {
+            label: (item, data) => {
+              const dataset = data.datasets[item.datasetIndex];
+              const value = dataset.data[item.index];
+              return `${value}%`;
+            }
+          }
         },
         scales: {
           xAxes: [
@@ -948,13 +959,18 @@ const HistoryChart = (props) => {
                 display: false
               },
               gridLines: {
-                display: false,
+                display: true,
+                borderDash: [8, 4],
+                color: '#eee',
                 drawBorder: false
               }
             }
           ],
           yAxes: [
             {
+              ticks: {
+                callback: (value) => `${value}%`
+              },
               gridLines: {
                 display: true,
                 borderDash: [8, 4],
