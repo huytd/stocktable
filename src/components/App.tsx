@@ -505,7 +505,7 @@ const tableConfig = [
             const title = pathRead(officier, 'title');
             return (<div>{name} ({title})</div>);
           })}
-        </div>);
+        </div>;
     },
     compare: false,
   },
@@ -519,7 +519,7 @@ const tableConfig = [
             const relation = pathRead(holder, 'relation');
             return (<div>{name} ({relation})</div>);
           })}
-        </div>);
+        </div>;
     },
   },
   {
@@ -532,7 +532,7 @@ const tableConfig = [
             const holdPercent = pathRead(owner, 'pctHeld.fmt');
             return (<div>{name} ({holdPercent})</div>);
           })}
-        </div>);
+        </div>;
     },
   },
   {
@@ -545,7 +545,7 @@ const tableConfig = [
             const holdPercent = pathRead(owner, 'pctHeld.fmt');
             return (<div>{name} ({holdPercent})</div>);
           })}
-        </div>);
+        </div>;
     },
   },
   
