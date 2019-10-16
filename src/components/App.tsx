@@ -987,7 +987,16 @@ const HistoryChart = (props) => {
     });
   }, [chartData]);
 
-  return <div id="chart-container"><canvas ref={canvasRef} /></div>;
+  return <div id="chart-container" className="flex flex-col">
+    <canvas className="flex-1" ref={canvasRef} />
+    <ul className="p-3 m-3 mx-auto h-48 flex flex-row">
+      <li>1D</li>
+      <li>1D</li>
+      <li>1D</li>
+      <li>1D</li>
+      <li>1D</li>
+    </ul>
+  </div>;
 };
 
 const DayLH = (props) => {
@@ -1045,7 +1054,7 @@ const DisplayTable = props => {
       const values = source.map(s => configExpression(s, field.path));
       const maxIndex = field.compare ? findMaxIndex(values) : -1;
       return <tr className="hover:bg-gray-100">
-        <td className="py-3 pl-3 text-gray-600">{field.text}</td>
+        <td className="py-3 pl-3 text-gray-700">{field.text}</td>
         {source.map((_, i) => <td className={`py-3 ${i === maxIndex ? 'font-bold' : ''}`}>{values[i]}</td>)}
       </tr>;
     }
