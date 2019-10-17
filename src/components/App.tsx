@@ -1,11 +1,10 @@
 /**
  * TODO:
- * 1. Make chart looks more cleaner and meaningful
- * 2. Customizable Table
- * 3. Provide more metrics
- * 4. Chart should have more range: 10Y, 5Y, 1Y, 6MO, 3MO,...
- * 5. Explorable Phase 1: Search stock with dropdown list
- * 6. Explorable Phase 2: List peers/competitors
+ * 1. Customizable Table
+ * 2. Explorable Phase 1: Search stock with dropdown list
+ * 3. Explorable Phase 2: List peers/competitors
+ * 4. News matched companies
+ * 5. More compact UI
  */
 
 import * as React from 'react';
@@ -780,15 +779,6 @@ const tableConfig = [
     path: 'defaultKeyStatistics.SandP52WeekChange.fmt',
     compare: true
   },
-  {
-    text: 'S&P 52 Week Price Change',
-    path: 'defaultKeyStatistics.SandP52WeekChange.fmt',
-    compare: true
-  },
-
-
-
-
 
   // https://www.marketwatch.com/investing/stock/pep/financials/cash-flow
   // https://finance.yahoo.com/quote/PEP/cash-flow/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAALaTDtUIjFuh2G6j4Ajvcdg0rLiElg9WGfjYLUSPXIRoFaaudY_MJuDhU01Yx6uMbDVYkpzx9nfaOfC1CbQGrmE3eViIoLw5u7NEfTe7AX2x_lKEKqhlSbK48Lwgczwm5YcYiCffZxtnAm3N3m8C_L7qQuU8POaqkCnYScOlKMeP
@@ -875,8 +865,6 @@ const fetchHistory = async (symbol, range, interval) => {
   return json;
 };
 
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-
 const HistoryChart = (props) => {
   const symbols = props.symbols;
 
@@ -944,6 +932,7 @@ const HistoryChart = (props) => {
     labels: [],
     data: []
   });
+
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -987,7 +976,7 @@ const HistoryChart = (props) => {
             borderWidth: 3,
             lineTension: 0,
             pointRadius: 0,
-            pointHitRadius: 5,
+            pointHitRadius: 10,
             data: c
           }))
         },
@@ -1002,7 +991,7 @@ const HistoryChart = (props) => {
             titleFontFamily: 'monospace',
             bodyFontFamily: 'monospace',
             caretSize: 5,
-            cornerRadius: 2,
+            cornerRadius: 4,
             xPadding: 10,
             yPadding: 10,
             callbacks: {
@@ -1013,7 +1002,7 @@ const HistoryChart = (props) => {
                 const dataset = data.datasets[item.datasetIndex];
                 const value = dataset.data[item.index];
                 const label = dataset.label.padEnd(4, ' ');
-                return `${label} ${value}`;
+                return `${label} ${value}%`;
               },
             }
           },
@@ -1039,7 +1028,9 @@ const HistoryChart = (props) => {
             yAxes: [
               {
                 ticks: {
-                  callback: (value, index) => index % 2 === 0 ? `${value}%` : ''
+                  callback: (value) => `${value}%`,
+                  autoSkip: true,
+                  maxTicksLimit: 8
                 },
                 gridLines: {
                   display: true,
@@ -1065,7 +1056,7 @@ const HistoryChart = (props) => {
     };
   }, [chartData]);
 
-  return <div id="chart-container" className="w-full pt-10 flex flex-col relative">
+  return <div id="chart-container" className="w-full pt-10 px-5 flex flex-col relative">
     <div className="p-3 mx-auto flex flex-row absolute top-0 left-0">
       <button onClick={()=>{switchChartSetting('1M')}} className={`${chartSetting.duration === '1mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r rounded-l-lg px-2 py-1 hover:bg-gray-200`}>1M</button>
       <button onClick={()=>{switchChartSetting('3M')}} className={`${chartSetting.duration === '3mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r px-2 py-1 hover:bg-gray-200`}>3M</button>
