@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { pathRead } from '../utils';
-import { DayLH } from './DayLH';
+import { DayHighLow } from './DayHighLow';
 
 export const TableConfig = [
   // PRICE
@@ -13,7 +13,7 @@ export const TableConfig = [
       const low = pathRead(source, 'summaryDetail.dayLow.raw');
       const high = pathRead(source, 'summaryDetail.dayHigh.raw');
       const value = pathRead(source, 'financialData.currentPrice.raw');
-      return <DayLH low={low} high={high} value={value} />;
+      return <DayHighLow low={low} high={high} value={value} />;
     }
   },
   {

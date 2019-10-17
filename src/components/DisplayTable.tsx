@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {configExpression, findMaxIndex} from '../utils';
+import { configExpression, findMaxIndex } from '../utils';
 
 export const DisplayTable = props => {
   const config = props.config;

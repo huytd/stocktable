@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {useEffect, useState, useRef, useLayoutEffect} from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import Chart from "chart.js";
-import {fetchHistory, COLORS} from '../utils';
+import { fetchHistory, COLORS } from '../utils';
 
 Chart.defaults.LineWithLine = Chart.defaults.line;
 Chart.controllers.LineWithLine = Chart.controllers.line.extend({

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const DayLH = (props: {low: any; high: any; value: any;}) => {
+export const DayHighLow = (props: {low: any; high: any; value: any;}) => {
   const low = props.low;
   const high = props.high;
   const value = props.value;
