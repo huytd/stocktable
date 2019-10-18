@@ -28,14 +28,20 @@ Chart.controllers.LineWithLine = Chart.controllers.line.extend({
    }
 });
 
-export const HistoryChart = (props) => {
+type ChartSetting = {
+  duration: string;
+  interval: string;
+  skipAxes: number;
+};
+
+export const HistoryChart = (props: {symbols: any;}) => {
   const symbols = props.symbols;
   const [chartSetting, setChartSetting] = useState({
     duration: '10y',
     interval: '1mo',
     skipAxes: 120
-  });
-  const switchChartSetting = label => {
+  } as ChartSetting);
+  const switchChartSetting = (label: string) => {
     switch (label) {
       case '1M':
         setChartSetting({
@@ -93,6 +99,7 @@ export const HistoryChart = (props) => {
     data: []
   });
   const canvasRef = useRef(null);
+
   useEffect(() => {
     (async () => {
       if (symbols) {
@@ -115,94 +122,12 @@ export const HistoryChart = (props) => {
       }
     })();
   }, [chartSetting]);
+
   useLayoutEffect(() => {
     if (chartData && chartData.data && chartData.data.length) {
       const canvas = canvasRef.current;
       var ctx = canvas.getContext('2d');
-      var chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'LineWithLine',
-        // The data for our dataset
-        data: {
-          labels: chartData.labels,
-          datasets: chartData.data.map((c, i) => ({
-            label: symbols[i],
-            fill: false,
-            borderColor: COLORS[i > COLORS.length ? i - Math.random(COLORS.length - 1) : i],
-            borderWidth: 3,
-            lineTension: 0,
-            pointRadius: 0,
-            pointHitRadius: 10,
-            data: c
-          }))
-        },
-        // Configuration options go here
-        options: {
-          maintainAspectRatio: false,
-          tooltips: {
-            mode: 'index',
-            intersect: false,
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            titleFontFamily: 'monospace',
-            bodyFontFamily: 'monospace',
-            caretSize: 5,
-            cornerRadius: 4,
-            xPadding: 10,
-            yPadding: 10,
-            callbacks: {
-              title: (item, data) => {
-                return `${data.labels[item[0].index]}`;
-              },
-              label: (item, data) => {
-                const dataset = data.datasets[item.datasetIndex];
-                const value = dataset.data[item.index];
-                const label = dataset.label.padEnd(4, ' ');
-                return `${label} ${value}%`;
-              },
-            }
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  minRotation: 90,
-                  maxRotation: 90,
-                  autoSkip: true,
-                  maxTicksLimit: chartSetting.skipAxes,
-                  callback: (value) => {
-                    const parts = value.split('-');
-                    return `${parts[1]}-${parts[2]}`;
-                  }
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  callback: (value) => `${value}%`,
-                  autoSkip: true,
-                  maxTicksLimit: 8
-                },
-                gridLines: {
-                  display: true,
-                  borderDash: [8, 4],
-                  color: '#eee',
-                  drawBorder: false,
-                }
-              }
-            ]
-          },
-          legend: {
-            labels: {
-              boxWidth: 12
-            }
-          },
-        }
-      });
+      var chart = new Chart(ctx, HistoryChartConfig(chartData, symbols, chartSetting));
     }
     return () => {
       if (chart) {
@@ -224,3 +149,88 @@ export const HistoryChart = (props) => {
   </div>;
 };
 
+const HistoryChartConfig = (chartData: {labels: any[]; data: any[];}, symbols: string[], chartSetting: ChartSetting): Chart.ChartConfiguration => {
+  return {
+    type: 'LineWithLine',
+    // The data for our dataset
+    data: {
+      labels: chartData.labels,
+      datasets: chartData.data.map((c, i) => ({
+        label: symbols[i],
+        fill: false,
+        borderColor: COLORS[i > COLORS.length ? i - Math.random(COLORS.length - 1) : i],
+        borderWidth: 3,
+        lineTension: 0,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        data: c
+      }))
+    },
+    // Configuration options go here
+    options: {
+      maintainAspectRatio: false,
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        titleFontFamily: 'monospace',
+        bodyFontFamily: 'monospace',
+        caretSize: 5,
+        cornerRadius: 4,
+        xPadding: 10,
+        yPadding: 10,
+        callbacks: {
+          title: (item, data) => {
+            return `${data.labels[item[0].index]}`;
+          },
+          label: (item, data) => {
+            const dataset = data.datasets[item.datasetIndex];
+            const value = dataset.data[item.index];
+            const label = dataset.label.padEnd(4, ' ');
+            return `${label} ${value}%`;
+          },
+        }
+      },
+      scales: {
+        xAxes: [
+          {
+            ticks: {
+              minRotation: 90,
+              maxRotation: 90,
+              autoSkip: true,
+              maxTicksLimit: chartSetting.skipAxes,
+              callback: (value) => {
+                const parts = value.split('-');
+                return `${parts[1]}-${parts[2]}`;
+              }
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            }
+          }
+        ],
+        yAxes: [
+          {
+            ticks: {
+              callback: (value) => `${value}%`,
+              autoSkip: true,
+              maxTicksLimit: 8
+            },
+            gridLines: {
+              display: true,
+              borderDash: [8, 4],
+              color: '#eee',
+              drawBorder: false,
+            }
+          }
+        ]
+      },
+      legend: {
+        labels: {
+          boxWidth: 12
+        }
+      },
+    }
+  };
+};

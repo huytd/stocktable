@@ -1,4 +1,10 @@
 /**
+ * PRODUCT GOAL:
+ * 1. A highly customizable stock evaluating tool
+ * 2. Make it easy to explore peer/competitors stocks
+ * 3. Not a stock screener/scanner
+ * 4. Won't seek to replace Yahoo Finance or any related product
+ * 5. Won't focus on trading-style stock strategies
  * TODO:
  * 1. Customizable Table
  * 2. Explorable Phase 1: Search stock with dropdown list
@@ -9,10 +15,9 @@
 
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { TableConfig } from './TableConfig';
-import { getParamSymbols, fetchStock, pathRead } from '../utils';
-import { DisplayTable } from './DisplayTable';
+import { getParamSymbols, fetchStock } from '../utils';
 import { HistoryChart } from './HistoryChart';
+import { ComparisonTable } from './ComparisonTable';
 
 export const App = () => {
   const symbols = getParamSymbols();
@@ -27,32 +32,8 @@ export const App = () => {
     })();
   }, []);
 
-  return <div className="w-full h-full flex flex-col">
-    <div className="flex-1">
+  return <div className="w-full h-full">
       <HistoryChart symbols={symbols}/>
-      <div className="px-5">
-        <table className="w-full">
-          <tbody>
-            <tr className="border-b">
-              <td className="py-3"></td>
-              {dataSource.map((s, i) => {
-                const symbol = pathRead(s, 'price.symbol');
-                const change = pathRead(s, 'price.regularMarketChangePercent.raw');
-                const percent = pathRead(s, 'price.regularMarketChangePercent.fmt');
-                const price = pathRead(s, 'price.regularMarketPrice.raw');
-                const name = pathRead(s, 'price.shortName');
-                return <td key={i} className="py-3">
-                  <h1 className="font-bold mr-2">{symbol}</h1>
-                  <div className="block">{name}</div>
-                  <h2 className="inline-block text-gray-800 mr-2">{price}</h2>
-                  <h2 className={`inline-block ${change > 0 ? 'text-green-600' : 'text-tomato-600'}`}>{percent}</h2>
-                </td>;
-              })}
-            </tr>
-            <DisplayTable config={TableConfig} source={dataSource} />
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <ComparisonTable dataSource={dataSource}/>
   </div>;
 };
