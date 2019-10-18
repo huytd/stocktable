@@ -158,7 +158,7 @@ const HistoryChartConfig = (chartData: {labels: any[]; data: any[];}, symbols: s
       datasets: chartData.data.map((c, i) => ({
         label: symbols[i],
         fill: false,
-        borderColor: COLORS[i > COLORS.length ? i - Math.random(COLORS.length - 1) : i],
+        borderColor: COLORS[i > COLORS.length ? i - (Math.random() * COLORS.length - 1) : i],
         borderWidth: 3,
         lineTension: 0,
         pointRadius: 0,
