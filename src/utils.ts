@@ -1,6 +1,12 @@
 export const COLORS = ['#0f6fc6', '#009dd9', '#0bd0d9', '#10cf9b', '#7cca62', '#a5c249'];
 const cors = `https://snackycors.herokuapp.com/`;
 
+export const decodeHTML = (html) => {
+	var txt = document.createElement('textarea');
+	txt.innerHTML = html;
+	return txt.value;
+};
+
 export const getParamSymbols = () => {
   const urlParams = new URLSearchParams(window.location.search);
   return (urlParams.get('symbols') || "").split(",");

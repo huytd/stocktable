@@ -2,10 +2,11 @@
  * PRODUCT GOAL:
  * 1. A highly customizable stock evaluating tool
  * 2. A tool to easily compare and explore peer/competitors stocks
- * 3. Visualize everything with Charts
- * 4. Not a stock screener/scanner
- * 5. Won't seek to replace Yahoo Finance or any related product
- * 6. Won't focus on trading-style stock strategies
+ * 3. Visualize metrics easily with Charts
+ * 4. Help you quickly calculate your investment return per stock
+ * 5. Not a stock screener/scanner
+ * 6. Won't seek to replace Yahoo Finance or any related product
+ * 7. Won't focus on trading-style stock strategies
  * TODO:
  * 1. Customizable Table
  * 2. Explorable Phase 1: Search stock with dropdown list
