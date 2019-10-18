@@ -42,7 +42,7 @@ export const App = () => {
         <HistoryChart symbols={symbols}/>
         <ComparisonTable dataSource={dataSource}/>
       </div>
-      <div className="flex-1">
+      <div className="w-1/3">
         <News symbols={symbols}/>
       </div>
     </div>
