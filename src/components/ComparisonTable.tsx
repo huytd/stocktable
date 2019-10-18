@@ -23,7 +23,7 @@ const DisplayTable = props => {
 };
 
 export const ComparisonTable = props => {
-  return <div className="border-t border-b" style={{ maxHeight: 600, overflowY: "auto" }}>
+  return <div className="border-t border-b">
     <table className="w-full">
       <thead>
         <tr className="border-b sticky top-0 bg-gray-100">
