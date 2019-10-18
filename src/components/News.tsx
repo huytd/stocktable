@@ -10,12 +10,6 @@ type NewsItem = {
   title: string
 };
 
-/**
- * TODO:
- * 1. Fetch the news feed from Yahoo RSS
- * 2. Parse it as a JSON data
- * 3. Render it out as a plain list, no fancy
- */
 export const News = (props: { symbols: string[] }) => {
   const symbols = props.symbols;
   const [news, setNews] = useState([] as NewsItem[]);
