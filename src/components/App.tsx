@@ -20,6 +20,7 @@ import { getParamSymbols, fetchStock } from '../utils';
 import { HistoryChart } from './HistoryChart';
 import { ComparisonTable } from './ComparisonTable';
 import {News} from './News';
+import {ReturnCalculator} from './ReturnCalculator';
 
 export const App = () => {
   const symbols = getParamSymbols();
@@ -44,6 +45,7 @@ export const App = () => {
         <ComparisonTable dataSource={dataSource}/>
       </div>
       <div className="w-1/3">
+        <ReturnCalculator symbols={symbols}/>
         <News symbols={symbols}/>
       </div>
     </div>
