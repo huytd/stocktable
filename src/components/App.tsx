@@ -1,19 +1,3 @@
-/**
- * PRODUCT GOAL:
- * 1. A highly customizable stock evaluating tool
- * 2. A tool to easily compare and explore peer/competitors stocks
- * 3. Visualize metrics easily with Charts
- * 4. Help you quickly calculate your investment return per stock
- * 5. Not a stock screener/scanner
- * 6. Won't seek to replace Yahoo Finance or any related product
- * 7. Won't focus on trading-style stock strategies
- * TODO:
- * 1. Customizable Table
- * 2. Explorable Phase 1: Search stock with dropdown list
- * 3. Explorable Phase 2: List peers/competitors
- * 4. More compact UI
- */
-
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getParamSymbols, fetchStock } from '../utils';
@@ -21,6 +5,7 @@ import { HistoryChart } from './HistoryChart';
 import { ComparisonTable } from './ComparisonTable';
 import {News} from './News';
 import {ReturnCalculator} from './ReturnCalculator';
+import {StockCalendar} from './StockCalendar';
 
 export const App = () => {
   const symbols = getParamSymbols();
@@ -45,6 +30,7 @@ export const App = () => {
         <ComparisonTable dataSource={dataSource}/>
       </div>
       <div className="w-1/3">
+        <StockCalendar dataSource={dataSource}/>
         <ReturnCalculator symbols={symbols}/>
         <News symbols={symbols}/>
       </div>

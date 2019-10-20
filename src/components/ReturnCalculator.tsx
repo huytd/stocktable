@@ -138,7 +138,6 @@ const ReturnChartConfig = (initialInvestment, symbols, entries) => {
     xAxisID: 'x-axis-2'
   });
 
-  console.log("DATA", chartData)
   return {
     type: 'bar',
     // The data for our dataset
