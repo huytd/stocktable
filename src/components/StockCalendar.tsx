@@ -30,7 +30,7 @@ export const StockCalendar = props => {
   const today = new Date();
 
   return <div className="p-3 border-b">
-    <div className="font-bold mb-5">Upcoming Events:</div>
+    <div className="font-bold mb-3">Upcoming Events:</div>
     {calendar.map(c => {
       return <div className={`inline-block w-1/3 border-l-4 mb-2 pl-2 ${c.type === 'earning' ? 'border-tomato-400' : 'border-lime-400'} ${c.date < today ? 'opacity-25' : ''}`}>
         <div className="uppercase text-xs text-gray-600">{c.type}</div>
