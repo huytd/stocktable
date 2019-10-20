@@ -61,7 +61,7 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
   useEffect(() => {
     (async () => {
       if (symbols) {
-        const response = await Promise.all(symbols.map(async (s) => await fetchHistory(s, chartSetting.duration, '1mo')));
+        const response = await Promise.all(symbols.map(async (s) => await fetchHistory(s, chartSetting.duration, '1d')));
         const entries = response.map(r => {
           return r.chart.result[0].indicators.adjclose[0].adjclose;
         }).map(s => [ s.shift(), s.pop() ]);
@@ -101,22 +101,36 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
 };
 
 const ReturnChartConfig = (symbols, entries) => {
+  const chartData = entries.map((e, i) => {
+    const color = COLORS[i > COLORS.length ? i - (Math.random() * COLORS.length - 1) : i];
+    const value = ((1000 / e[0]) * e[1]).toFixed(2);
+    return {
+      label: symbols[i],
+      borderColor: color,
+      backgroundColor: color,
+      borderWidth: 2,
+      data: [ parseFloat(value) ],
+      xAxisID: 'x-axis-1'
+    }
+  });
+
+  chartData.unshift({
+    type: 'line',
+    label: 'Initial investment',
+    borderColor: '#F00',
+    fill: false,
+    borderWidth: 2,
+    data: [ 1000, 1000, 1000, 1000 ],
+    xAxisID: 'x-axis-2'
+  });
+
+  console.log("DATA", chartData)
   return {
     type: 'bar',
     // The data for our dataset
     data: {
       labels: [''],
-      datasets: entries.map((e, i) => {
-        const color = COLORS[i > COLORS.length ? i - (Math.random() * COLORS.length - 1) : i];
-        const value = ((1000 / e[0]) * e[1]).toFixed(2);
-        return {
-          label: symbols[i],
-          borderColor: color,
-          backgroundColor: color,
-          borderWidth: 2,
-          data: [ parseFloat(value) ]
-        }
-      })
+      datasets: chartData
     },
     // Configuration options go here
     options: {
@@ -138,7 +152,7 @@ const ReturnChartConfig = (symbols, entries) => {
         yPadding: 10,
         callbacks: {
           title: (item, data) => {
-            return `${data.labels[item[0].index]}`;
+            return "";
           },
           label: (item, data) => {
             const dataset = data.datasets[item.datasetIndex];
@@ -149,12 +163,28 @@ const ReturnChartConfig = (symbols, entries) => {
         }
       },
       scales: {
+        xAxes: [
+          {
+            id: 'x-axis-1'
+          },
+          {
+            id: 'x-axis-2',
+            label: '',
+            ticks: {
+              callback: (value) => `${formatCurrency(value)}`
+            },
+            gridLines: {
+              display: false
+            }
+          }
+        ],
         yAxes: [
           {
             ticks: {
               callback: (value) => `${formatCurrency(value)}`,
               autoSkip: true,
-              maxTicksLimit: 10
+              maxTicksLimit: 10,
+              suggestedMin: 0
             },
             gridLines: {
               display: true,
