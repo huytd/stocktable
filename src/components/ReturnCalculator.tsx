@@ -53,10 +53,15 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
       break;
     }
   };
+
   const [chartData, setChartData] = useState({
     data: []
   });
+
+  const [investmentAmount, setInvestmentAmount] = useState(1000);
+
   const canvasRef = useRef(null);
+  const investRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -76,19 +81,28 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
     if (chartData && chartData.data && chartData.data.length) {
       const canvas = canvasRef.current;
       var ctx = canvas.getContext('2d');
-      var chart = new Chart(ctx, ReturnChartConfig(symbols, chartData.data));
+      var chart = new Chart(ctx, ReturnChartConfig(investmentAmount, symbols, chartData.data));
     }
     return () => {
       if (chart) {
         chart.destroy();
       }
     };
-  }, [chartData]);
+  }, [chartData, investmentAmount]);
+
+  const changeInvested = () => {
+    if (investRef && investRef.current) {
+      const num = parseFloat(investRef.current.value);
+      if (!isNaN(num) && num > 0) {
+        setInvestmentAmount(num);
+      }
+    }
+  };
 
   return <div id="chart-container" className="w-full border-b pt-10 pb-2 px-5 flex flex-col relative">
     <canvas className="flex-1" ref={canvasRef} />
     <div className="p-3 h-12 mx-auto flex flex-row absolute top-0 right-0">
-      <span className="bold mr-2">Estimated worth of $1000 invested in</span>
+      <span className="bold mr-2">Estimated worth of $<input type="text" className="w-12 border" value={investmentAmount} ref={investRef} onChange={changeInvested} /> invested in</span>
       <button onClick={() => {switchChartSetting('1M');}} className={`${chartSetting.duration === '1mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r rounded-l-lg px-2 py-1 hover:bg-gray-200`}>1M</button>
       <button onClick={() => {switchChartSetting('3M');}} className={`${chartSetting.duration === '3mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r px-2 py-1 hover:bg-gray-200`}>3M</button>
       <button onClick={() => {switchChartSetting('6M');}} className={`${chartSetting.duration === '6mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r px-2 py-1 hover:bg-gray-200`}>6M</button>
@@ -100,10 +114,10 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
   </div>;
 };
 
-const ReturnChartConfig = (symbols, entries) => {
+const ReturnChartConfig = (initialInvestment, symbols, entries) => {
   const chartData = entries.map((e, i) => {
     const color = COLORS[i > COLORS.length ? i - (Math.random() * COLORS.length - 1) : i];
-    const value = ((1000 / e[0]) * e[1]).toFixed(2);
+    const value = ((initialInvestment / e[0]) * e[1]).toFixed(2);
     return {
       label: symbols[i],
       borderColor: color,
@@ -120,7 +134,7 @@ const ReturnChartConfig = (symbols, entries) => {
     borderColor: '#F00',
     fill: false,
     borderWidth: 2,
-    data: [ 1000, 1000, 1000, 1000 ],
+    data: symbols.map(_ => initialInvestment),
     xAxisID: 'x-axis-2'
   });
 
