@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useEffect, useState, useRef, useLayoutEffect} from 'react';
 import Chart from "chart.js";
-import { fetchHistory, COLORS } from '../utils';
+import { fetchHistory, COLORS, formatCurrency } from '../utils';
 
 type ChartSetting = {
   duration: string;
@@ -87,7 +87,7 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
 
   return <div id="chart-container" className="w-full border-b pt-10 pb-2 px-5 flex flex-col relative">
     <canvas className="flex-1" ref={canvasRef} />
-    <div className="p-3 mx-auto flex flex-row absolute top-0 right-0">
+    <div className="p-3 h-12 mx-auto flex flex-row absolute top-0 right-0">
       <span className="bold mr-2">Estimated worth of $1000 invested in</span>
       <button onClick={() => {switchChartSetting('1M');}} className={`${chartSetting.duration === '1mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r rounded-l-lg px-2 py-1 hover:bg-gray-200`}>1M</button>
       <button onClick={() => {switchChartSetting('3M');}} className={`${chartSetting.duration === '3mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r px-2 py-1 hover:bg-gray-200`}>3M</button>
@@ -121,6 +121,50 @@ const ReturnChartConfig = (symbols, entries) => {
     // Configuration options go here
     options: {
       maintainAspectRatio: false,
+      legend: {
+        labels: {
+          boxWidth: 12
+        }
+      },
+      tooltips: {
+        mode: 'single',
+        intersect: false,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        titleFontFamily: 'monospace',
+        bodyFontFamily: 'monospace',
+        caretSize: 5,
+        cornerRadius: 4,
+        xPadding: 10,
+        yPadding: 10,
+        callbacks: {
+          title: (item, data) => {
+            return `${data.labels[item[0].index]}`;
+          },
+          label: (item, data) => {
+            const dataset = data.datasets[item.datasetIndex];
+            const value = dataset.data[item.index];
+            const label = dataset.label.padEnd(4, ' ');
+            return `${label} ${formatCurrency(value)}`;
+          },
+        }
+      },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              callback: (value) => `${formatCurrency(value)}`,
+              autoSkip: true,
+              maxTicksLimit: 10
+            },
+            gridLines: {
+              display: true,
+              borderDash: [8, 4],
+              color: '#eee',
+              drawBorder: false
+            }
+          }
+        ]
+      }
     }
   };
 };

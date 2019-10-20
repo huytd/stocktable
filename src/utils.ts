@@ -139,3 +139,7 @@ export const findMaxIndex = values => {
   });
   return maxIndex;
 };
+
+export const formatCurrency = number => {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
+};
