@@ -10,7 +10,7 @@ import {RecommendationChart} from './RecommendationChart';
 
 export const App = () => {
   const symbols = getParamSymbols();
-  if (!symbols.length || symbols.shift() === "") {
+  if (!symbols.length || symbols[0] === "") {
     window.location = "https://easystockresearch.com/?symbols=AAPL,GOOG,FB,AMZN,NFLX,TSLA";
   }
   const [dataSource, setSource] = useState([]);
