@@ -143,3 +143,20 @@ export const findMaxIndex = values => {
 export const formatCurrency = number => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
 };
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const monthOffset = (month, prev) => {
+  const max = MONTHS.length;
+  let delta = month + prev;
+  if (delta < 0) {
+    if (max > Math.abs(delta)) {
+      return MONTHS[max + delta];
+    } else {
+      delta = delta % max;
+      if (delta < 0) {
+        delta = max + delta;
+      }
+    }
+  }
+  return MONTHS[delta];
+};
