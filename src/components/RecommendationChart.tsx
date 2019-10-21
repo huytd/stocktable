@@ -31,7 +31,7 @@ export const RecommendationChart = props => {
     }
   }, [trends]);
 
-  return <div id="chart-container" className="w-full border-b pt-10 pb-2 px-5 flex flex-col relative">
+  return <div id="chart-container" className="w-full border-b p-3 pb-10 flex flex-col relative">
     <div className="font-bold mb-3">Recommendation Trend:</div>
     <canvas className="flex-1" ref={canvasRef} />
   </div>;

@@ -31,6 +31,7 @@ export const News = (props: { symbols: string[] }) => {
   }, [symbols])
 
   return <div className="p-3">
+    <div className="font-bold mb-3">Related News:</div>
     <table className="w-full">
       <tbody>
         {
