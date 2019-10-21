@@ -6,6 +6,7 @@ import { ComparisonTable } from './ComparisonTable';
 import {News} from './News';
 import {ReturnCalculator} from './ReturnCalculator';
 import {StockCalendar} from './StockCalendar';
+import {RecommendationChart} from './RecommendationChart';
 
 export const App = () => {
   const symbols = getParamSymbols();
@@ -32,6 +33,7 @@ export const App = () => {
       <div className="w-1/3">
         <StockCalendar dataSource={dataSource}/>
         <ReturnCalculator symbols={symbols}/>
+        <RecommendationChart dataSource={dataSource}/>
         <News symbols={symbols}/>
       </div>
     </div>
