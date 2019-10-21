@@ -15,8 +15,6 @@ export const RecommendationChart = props => {
     }
   });
 
-  console.log("DBG::>>>", trends);
-
   const canvasRef = useRef(null);
 
   useLayoutEffect(() => {
