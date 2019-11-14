@@ -8,6 +8,8 @@ export const StockCalendar = props => {
     const earningDate = new Date(`${earningDateStr}T00:00:00`);
     const dividendDateStr = pathRead(s, 'calendarEvents.dividendDate.fmt');
     const dividendDate = new Date(`${dividendDateStr}T00:00:00`);
+    const exDividendDateStr = pathRead(s, 'calendarEvents.exDividendDate.fmt');
+    const exDividendDate = new Date(`${exDividendDateStr}T00:00:00`);
     return [
       earningDate.toString() !== 'Invalid Date' ? {
         symbol: symbol,
@@ -20,7 +22,13 @@ export const StockCalendar = props => {
         type: 'dividend',
         date: dividendDate,
         original: dividendDateStr
-      } : undefined
+      } : undefined,
+      exDividendDate.toString() !== 'Invalid Date' ? {
+        symbol: symbol,
+        type: 'exdividend',
+        date: exDividendDate,
+        original: exDividendDateStr
+      } : undefined,
     ]
   });
 
@@ -32,7 +40,7 @@ export const StockCalendar = props => {
   return <div className="p-3 border-b">
     <div className="font-bold mb-3">Upcoming Events:</div>
     {calendar.map(c => {
-      return <div className={`inline-block w-1/3 border-l-4 mb-2 pl-2 ${c.type === 'earning' ? 'border-tomato-400' : 'border-lime-400'} ${c.date < today ? 'opacity-25' : ''}`}>
+      return <div className={`inline-block w-1/3 border-l-4 mb-2 pl-2 ${c.type === 'earning' ? 'border-tomato-400' : (c.type === 'dividend' ? 'border-lime-400' : 'border-blue-500')} ${c.date < today ? 'opacity-25' : ''}`}>
         <div className="uppercase text-xs text-gray-600">{c.type}</div>
         <div className="uppercase"><span className="font-bold">{c.symbol}</span> <span>{c.date.toLocaleDateString()}</span></div>
       </div>;

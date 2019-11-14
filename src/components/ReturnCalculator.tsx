@@ -99,7 +99,7 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
     }
   };
 
-  return <div id="chart-container" className="w-full border-b pt-10 pb-2 px-5 flex flex-col relative">
+  return <div id="chart-container" className="w-full border-b p-3 pt-10 flex flex-col relative">
     <canvas className="flex-1" ref={canvasRef} />
     <div className="p-3 h-12 mx-auto flex flex-row absolute top-0 right-0">
       <span className="bold mr-2">Estimated worth of $<input type="text" className="w-12 border" value={investmentAmount} ref={investRef} onChange={changeInvested} /> invested in</span>
