@@ -99,9 +99,9 @@ export const ReturnCalculator = (props: {symbols: any;}) => {
     }
   };
 
-  return <div id="chart-container" className="w-full border-b p-3 pt-10 flex flex-col relative">
+  return <div id="chart-container" className="w-full border-b pt-10 pb-2 px-5 flex flex-col relative">
     <canvas className="flex-1" ref={canvasRef} />
-    <div className="p-3 h-12 mx-auto flex flex-row absolute top-0 right-0">
+    <div className="p-3 h-12 mx-auto flex flex-row absolute top-0 right-0 mt-2">
       <span className="bold mr-2">Estimated worth of $<input type="text" className="w-12 border" value={investmentAmount} ref={investRef} onChange={changeInvested} /> invested in</span>
       <button onClick={() => {switchChartSetting('1M');}} className={`${chartSetting.duration === '1mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r rounded-l-lg px-2 py-1 hover:bg-gray-200`}>1M</button>
       <button onClick={() => {switchChartSetting('3M');}} className={`${chartSetting.duration === '3mo' ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'} text-xs border-gray-400 border-r px-2 py-1 hover:bg-gray-200`}>3M</button>
